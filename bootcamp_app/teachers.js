@@ -28,12 +28,12 @@ JOIN students
   ON assistance_requests.student_id = students.id
 JOIN cohorts
   ON students.cohort_id = cohorts.id
-WHERE cohorts.name LIKE '%${process.argv[2] || "_"}%'
+WHERE cohorts.name LIKE '%'||$1||'%'
 ORDER BY teacher ASC
-LIMIT ${process.argv[3] || 1};
+LIMIT $2 ;
 `;
-// console.log(teachersQuery);
-pool.query(teachersQuery)
+console.log(teachersQuery);
+pool.query(teachersQuery, [cohort, limit])
   .then(res => {
     // console.log(res.rows);
     res.rows.forEach(row => {
